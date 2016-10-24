@@ -13,9 +13,11 @@ RUN echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d
 # Avoid ERROR: invoke-rc.d: unknown initscript, /etc/init.d/systemd-logind not found.
 RUN touch /etc/init.d/systemd-logind
 
+# Adding sudo for SLTC, lets see if we can find a better place (needed in Ubuntu 16)
+
 RUN \
 apt-get update && \
-apt-get install -y wget && \
+apt-get install -y wget sudo && \
 wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
   echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list && \
 apt-get update && \
