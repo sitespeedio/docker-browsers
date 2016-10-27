@@ -23,6 +23,7 @@ wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add
 apt-get update && \
 apt-get install -y \
 ca-certificates \
+x11vnc \
 libgl1-mesa-dri \
 xfonts-100dpi \
 xfonts-75dpi \
