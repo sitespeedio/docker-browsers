@@ -1,4 +1,4 @@
-FROM sitespeedio/visualmetrics-deps
+FROM sitespeedio/visualmetrics-deps:ffmpeg-3.2.2-imagemagick-6.9.7-2
 
 ENV LC_ALL C
 ENV DEBIAN_FRONTEND noninteractive
