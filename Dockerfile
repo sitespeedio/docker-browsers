@@ -8,21 +8,20 @@ ENV FIREFOX_VERSION 50.1*
 ENV CHROME_VERSION 55.0.*
 
 # Avoid ERROR: invoke-rc.d: policy-rc.d denied execution of start.
-RUN echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d
-
 # Avoid ERROR: invoke-rc.d: unknown initscript, /etc/init.d/systemd-logind not found.
-RUN touch /etc/init.d/systemd-logind
+
+RUN echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d && \
+  touch /etc/init.d/systemd-logind
 
 # Adding sudo for SLTC, lets see if we can find a better place (needed in Ubuntu 16)
 
 RUN \
 apt-get update && \
-apt-get install -y wget sudo && \
+apt-get install -y wget sudo --no-install-recommends && \
 wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
   echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list && \
 apt-get update && \
 apt-get install -y \
-ca-certificates \
 x11vnc \
 libgl1-mesa-dri \
 xfonts-100dpi \
