@@ -15,6 +15,11 @@ RUN echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d && \
 
 # Adding sudo for SLTC, lets see if we can find a better place (needed in Ubuntu 16)
 
+# fonts-ipafont-gothic fonts-ipafont-mincho # jp (Japanese) fonts, install seems to solve missing Chinese hk/tw fonts as well.
+# ttf-wqy-microhei fonts-wqy-microhei       # kr (Korean) fonts
+# fonts-tlwg-loma fonts-tlwg-loma-otf       # th (Thai) fonts
+# fonts-indic	  			    # India 
+
 RUN \
 apt-get update && \
 apt-get install -y wget sudo --no-install-recommends && \
@@ -31,6 +36,13 @@ xfonts-75dpi \
 xfonts-scalable \
 xfonts-cyrillic \
 dbus-x11 \
+fonts-ipafont-gothic \
+fonts-ipafont-mincho \
+ttf-wqy-microhei \
+fonts-wqy-microhei \
+fonts-tlwg-loma \
+fonts-tlwg-loma-otf \
+fonts-indic \
 xvfb --no-install-recommends && \
 apt-get purge -y wget && \
 apt-get install -y google-chrome-beta=${CHROME_VERSION} && \
