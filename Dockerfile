@@ -18,7 +18,7 @@ RUN echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d && \
 # fonts-ipafont-gothic fonts-ipafont-mincho # jp (Japanese) fonts, install seems to solve missing Chinese hk/tw fonts as well.
 # ttf-wqy-microhei fonts-wqy-microhei       # kr (Korean) fonts
 # fonts-tlwg-loma fonts-tlwg-loma-otf       # th (Thai) fonts
-# fonts-indic	  			    # India 
+# firefox-locale-hi fonts-gargi		    # Hindi (for now) 
 
 RUN \
 apt-get update && \
@@ -42,7 +42,8 @@ ttf-wqy-microhei \
 fonts-wqy-microhei \
 fonts-tlwg-loma \
 fonts-tlwg-loma-otf \
-fonts-indic \
+firefox-locale-hi \
+fonts-gargi \
 xvfb --no-install-recommends && \
 apt-get purge -y wget && \
 apt-get install -y google-chrome-beta=${CHROME_VERSION} && \
