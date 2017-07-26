@@ -46,7 +46,7 @@ firefox-locale-hi \
 fonts-gargi \
 xvfb --no-install-recommends && \
 apt-get purge -y wget && \
-apt-get install -y google-chrome=${CHROME_VERSION} && \
+apt-get install -y google-chrome-stable=${CHROME_VERSION} && \
 apt-get install -y firefox=${FIREFOX_VERSION} --no-install-recommends && \
 apt-get clean autoclean && \
 rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
