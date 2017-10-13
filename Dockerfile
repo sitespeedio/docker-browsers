@@ -1,4 +1,4 @@
-FROM sitespeedio/visualmetrics-deps:ffmpeg-3.3.1-imagemagick-6.8.9-9-3
+FROM sitespeedio/visualmetrics-deps:ffmpeg-3.3.4-imagemagick-6.8.9-9
 
 ENV LC_ALL C
 ENV DEBIAN_FRONTEND noninteractive
@@ -13,7 +13,7 @@ ENV CHROME_VERSION 62.*
 RUN echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d && \
   touch /etc/init.d/systemd-logind
 
-# Adding sudo for SLTC, lets see if we can find a better place (needed in Ubuntu 16)
+# Adding sudo for Throttle, lets see if we can find a better place (needed in Ubuntu 17)
 
 # fonts-ipafont-gothic fonts-ipafont-mincho # jp (Japanese) fonts, install seems to solve missing Chinese hk/tw fonts as well.
 # ttf-wqy-microhei fonts-wqy-microhei       # kr (Korean) fonts
@@ -40,7 +40,7 @@ RUN fonts='fonts-ipafont-gothic fonts-ipafont-mincho ttf-wqy-microhei fonts-wqy-
   tar -xjf firefox-${FIREFOX_VERSION}.tar.bz2 && \
   mv firefox /opt/ && \
   ln -s /opt/firefox/firefox /usr/local/bin/firefox && \
-  apt-get purge -y --auto-remove $buildDeps \
+  apt-get purge -y --auto-remove $buildDeps && \
   apt-get install -y google-chrome-beta=${CHROME_VERSION} && \
   apt-get clean autoclean && \
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
