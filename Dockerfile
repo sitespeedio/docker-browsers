@@ -5,7 +5,7 @@ ENV DEBIAN_FRONTEND noninteractive
 ENV DEBCONF_NONINTERACTIVE_SEEN true
 
 ENV FIREFOX_VERSION 54.0.1
-ENV CHROME_VERSION 63.*
+ENV CHROME_VERSION 62.*
 
 # Avoid ERROR: invoke-rc.d: policy-rc.d denied execution of start.
 # Avoid ERROR: invoke-rc.d: unknown initscript, /etc/init.d/systemd-logind not found.
@@ -41,6 +41,6 @@ RUN fonts='fonts-ipafont-gothic fonts-ipafont-mincho ttf-wqy-microhei fonts-wqy-
   mv firefox /opt/ && \
   ln -s /opt/firefox/firefox /usr/local/bin/firefox && \
   apt-get purge -y --auto-remove $buildDeps && \
-  apt-get install -y google-chrome-beta=${CHROME_VERSION} && \
+  apt-get install -y google-chrome-stable=${CHROME_VERSION} && \
   apt-get clean autoclean && \
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
