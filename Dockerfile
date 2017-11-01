@@ -34,6 +34,7 @@ RUN fonts='fonts-ipafont-gothic fonts-ipafont-mincho ttf-wqy-microhei fonts-wqy-
   ca-certificates \
   x11vnc \
   sudo \
+  iproute2 \
   $fonts \
   $xvfbDeps \
   --no-install-recommends && \
