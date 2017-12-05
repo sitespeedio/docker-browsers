@@ -24,6 +24,7 @@ RUN echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d && \
 RUN fonts='fonts-ipafont-gothic fonts-ipafont-mincho ttf-wqy-microhei fonts-wqy-microhei fonts-tlwg-loma fonts-tlwg-loma-otf firefox-locale-hi fonts-gargi' && \
   buildDeps='bzip2 wget' && \
   xvfbDeps='xvfb libgl1-mesa-dri xfonts-100dpi xfonts-75dpi xfonts-scalable xfonts-cyrillic dbus-x11' && \
+  sharpDeps='build-essential' && \
   apt-get update && \
   apt-get install -y $buildDeps --no-install-recommends && \
   wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
@@ -37,6 +38,7 @@ RUN fonts='fonts-ipafont-gothic fonts-ipafont-mincho ttf-wqy-microhei fonts-wqy-
   iproute2 \
   $fonts \
   $xvfbDeps \
+  $sharpDeps \
   --no-install-recommends && \
   wget https://ftp.mozilla.org/pub/firefox/releases/${FIREFOX_VERSION}/linux-x86_64/en-US/firefox-${FIREFOX_VERSION}.tar.bz2 && \
   tar -xjf firefox-${FIREFOX_VERSION}.tar.bz2 && \
