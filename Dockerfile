@@ -44,7 +44,7 @@ RUN fonts='fonts-ipafont-gothic fonts-ipafont-mincho ttf-wqy-microhei fonts-wqy-
   wget https://ftp.mozilla.org/pub/firefox/nightly/2018/04/2018-04-26-22-01-44-mozilla-central/firefox-61.0a1.en-US.linux-x86_64.tar.bz2 && \
   tar -xjf firefox-61.0a1.en-US.linux-x86_64.tar.bz2 && \
   mv firefox /opt/ && \
-  ln -s /usr/bin/firefox-trunk /usr/local/bin/firefox && \
+  ln -s /opt/firefox/firefox /usr/local/bin/firefox && \
   apt-get purge -y --auto-remove $buildDeps && \
   apt-get install -y google-chrome-stable=${CHROME_VERSION} && \
   apt-get clean autoclean && \
