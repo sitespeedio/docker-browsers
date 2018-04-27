@@ -37,13 +37,13 @@ RUN fonts='fonts-ipafont-gothic fonts-ipafont-mincho ttf-wqy-microhei fonts-wqy-
   x11vnc \
   sudo \
   iproute2 \
-  firefox-trunk \
+  # firefox-trunk \
   $fonts \
   $xvfbDeps \
   --no-install-recommends && \
-#  wget https://ftp.mozilla.org/pub/firefox/releases/${FIREFOX_VERSION}/linux-x86_64/en-US/firefox-${FIREFOX_VERSION}.tar.bz2 && \
-#  tar -xjf firefox-${FIREFOX_VERSION}.tar.bz2 && \
-#  mv firefox /opt/ && \
+  wget https://ftp.mozilla.org/pub/firefox/nightly/2018/04/2018-04-26-22-01-44-mozilla-central/firefox-61.0a1.en-US.linux-x86_64.tar.bz2 && \
+  tar -xjf firefox-61.0a1.en-US.linux-x86_64.tar.bz2 && \
+  mv firefox /opt/ && \
   ln -s /usr/bin/firefox-trunk /usr/local/bin/firefox && \
   apt-get purge -y --auto-remove $buildDeps && \
   apt-get install -y google-chrome-stable=${CHROME_VERSION} && \
