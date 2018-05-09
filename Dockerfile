@@ -23,6 +23,7 @@ RUN echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d && \
 RUN fonts='fonts-ipafont-gothic fonts-ipafont-mincho ttf-wqy-microhei fonts-wqy-microhei fonts-tlwg-loma fonts-tlwg-loma-otf firefox-locale-hi fonts-gargi' && \
   buildDeps='bzip2 gnupg wget' && \
   xvfbDeps='xvfb libgl1-mesa-dri xfonts-100dpi xfonts-75dpi xfonts-scalable xfonts-cyrillic dbus-x11' && \
+  firefoxDeps='libfontconfig1 libxrender1 libasound-dev libdbus-glib-1-dev libgtk2.0-0 libxt6' && \
   apt-get update && \
   apt-get install -y $buildDeps --no-install-recommends && \
   wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
@@ -41,6 +42,7 @@ RUN fonts='fonts-ipafont-gothic fonts-ipafont-mincho ttf-wqy-microhei fonts-wqy-
   tar -xjf firefox-${FIREFOX_VERSION}.tar.bz2 && \
   mv firefox /opt/ && \
   ln -s /opt/firefox/firefox /usr/local/bin/firefox && \
+  apt-get install -y $firefoxDeps --no-install-recommends && \
   apt-get purge -y --auto-remove $buildDeps && \
   apt-get install -y google-chrome-stable=${CHROME_VERSION} && \
  # apt-get install -y google-chrome-beta=${CHROME_BETA_VERSION} && \
