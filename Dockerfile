@@ -42,7 +42,7 @@ RUN fonts='fonts-ipafont-gothic fonts-ipafont-mincho ttf-wqy-microhei fonts-wqy-
   tar -xjf firefox-${FIREFOX_VERSION}.tar.bz2 && \
   mv firefox /opt/ && \
   ln -s /opt/firefox/firefox /usr/local/bin/firefox && \
-  apt-get install -y $firefoxDeps --no-install-recommends && \
+  apt-get install -y $firefoxDeps && \
   apt-get purge -y --auto-remove $buildDeps && \
   apt-get install -y google-chrome-stable=${CHROME_VERSION} && \
  # apt-get install -y google-chrome-beta=${CHROME_BETA_VERSION} && \
