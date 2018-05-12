@@ -39,6 +39,7 @@ RUN fonts='fonts-ipafont-gothic fonts-ipafont-mincho ttf-wqy-microhei fonts-wqy-
   --no-install-recommends && \
   wget https://ftp.mozilla.org/pub/firefox/releases/${FIREFOX_VERSION}/linux-x86_64/en-US/firefox-${FIREFOX_VERSION}.tar.bz2 && \
   tar -xjf firefox-${FIREFOX_VERSION}.tar.bz2 && \
+  rm firefox-${FIREFOX_VERSION}.tar.bz2 && \
   mv firefox /opt/ && \
   ln -s /opt/firefox/firefox /usr/local/bin/firefox && \
   # Needed for when we install FF this way
