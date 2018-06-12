@@ -49,3 +49,6 @@ RUN fonts='fonts-ipafont-gothic fonts-ipafont-mincho ttf-wqy-microhei fonts-wqy-
  # apt-get install -y google-chrome-beta=${CHROME_BETA_VERSION} && \
   apt-get clean autoclean && \
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# We need a more recent ADB to be able to run Chromedriver 2.39
+COPY files/adb /usr/local/bin/
