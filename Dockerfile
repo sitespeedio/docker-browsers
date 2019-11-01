@@ -1,11 +1,11 @@
-FROM sitespeedio/visualmetrics-deps:ffmpeg-4.1.3-imagemagick-6.9.7-5
+FROM sitespeedio/visualmetrics-deps:ffmpeg-4.2.1-imagemagick-6.9.10-14
 
 ENV LC_ALL C
 ENV DEBIAN_FRONTEND noninteractive
 ENV DEBCONF_NONINTERACTIVE_SEEN true
 
-ENV FIREFOX_VERSION 69.0
-ENV CHROME_VERSION 77.*
+ENV FIREFOX_VERSION 70.0
+ENV CHROME_VERSION 78.*
 #ENV CHROME_BETA_VERSION 77.*
 
 # Avoid ERROR: invoke-rc.d: policy-rc.d denied execution of start.
