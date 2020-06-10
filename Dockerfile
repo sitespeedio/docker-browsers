@@ -1,11 +1,11 @@
-FROM sitespeedio/visualmetrics-deps:ffmpeg-4.2.1-imagemagick-6.9.10-14
+FROM sitespeedio/visualmetrics-deps:ffmpeg-4.2.2-imagemagick-6.9.10-23-p2
 
 ENV LC_ALL C
 ENV DEBIAN_FRONTEND noninteractive
 ENV DEBCONF_NONINTERACTIVE_SEEN true
 
-ENV FIREFOX_VERSION 75.0
-ENV CHROME_VERSION 81.*
+ENV FIREFOX_VERSION 77.0
+ENV CHROME_VERSION 83.*
 #ENV CHROME_BETA_VERSION 77.*
 
 # Avoid ERROR: invoke-rc.d: policy-rc.d denied execution of start.
@@ -22,14 +22,14 @@ RUN echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d && \
 # firefox-locale-hi fonts-gargi		    # Hindi (for now)
 
 RUN fonts='fonts-ipafont-gothic fonts-ipafont-mincho ttf-wqy-microhei fonts-wqy-microhei fonts-tlwg-loma fonts-tlwg-loma-otf firefox-locale-hi fonts-gargi' && \
-  buildDeps='bzip2 gnupg wget' && \
+  buildDeps='bzip2 gnupg wget ca-certificates' && \
   xvfbDeps='xvfb libgl1-mesa-dri xfonts-100dpi xfonts-75dpi xfonts-scalable xfonts-cyrillic dbus-x11' && \
   apt-get update && \
-  apt-get install -y $buildDeps --no-install-recommends && \
+  DEBIAN_FRONTEND=noninteractive apt-get install -y $buildDeps --no-install-recommends && \
   wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
   echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list && \
   apt-get update && \
-  apt-get install -y \
+  DEBIAN_FRONTEND=noninteractive apt-get install -y \
   android-tools-adb \
   ca-certificates \
   x11vnc \
@@ -50,6 +50,9 @@ RUN fonts='fonts-ipafont-gothic fonts-ipafont-mincho ttf-wqy-microhei fonts-wqy-
   # apt-get install -y google-chrome-beta=${CHROME_BETA_VERSION} && \
   apt-get clean autoclean && \
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# In the future sudo is fixed see https://github.com/sitespeedio/browsertime/issues/1105
+RUN echo "Set disable_coredump false" >> /etc/sudo.conf
 
 # We need a more recent ADB to be able to run Chromedriver 2.39
 COPY files/adb /usr/local/bin/
