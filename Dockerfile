@@ -6,6 +6,7 @@ ENV DEBCONF_NONINTERACTIVE_SEEN true
 
 ENV FIREFOX_VERSION 84.0
 ENV CHROME_VERSION 87.*
+ENV EDGE_VERSION 89.*
 #ENV CHROME_BETA_VERSION 77.*
 
 # Avoid ERROR: invoke-rc.d: policy-rc.d denied execution of start.
@@ -22,12 +23,16 @@ RUN echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d && \
 # firefox-locale-hi fonts-gargi		    # Hindi (for now)
 
 RUN fonts='fonts-ipafont-gothic fonts-ipafont-mincho ttf-wqy-microhei fonts-wqy-microhei fonts-tlwg-loma fonts-tlwg-loma-otf firefox-locale-hi fonts-gargi' && \
-  buildDeps='bzip2 gnupg wget ca-certificates' && \
+  buildDeps='bzip2 gnupg wget ca-certificates curl gpg' && \
   xvfbDeps='xvfb libgl1-mesa-dri xfonts-100dpi xfonts-75dpi xfonts-scalable xfonts-cyrillic dbus-x11' && \
   apt-get update && \
   DEBIAN_FRONTEND=noninteractive apt-get install -y $buildDeps --no-install-recommends && \
   wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
   echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list && \
+  curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg && \
+  install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/  && \
+  sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/edge stable main" > /etc/apt/sources.list.d/microsoft-edge-dev.list'  && \
+  rm microsoft.gpg  && \
   apt-get update && \
   DEBIAN_FRONTEND=noninteractive apt-get install -y \
   android-tools-adb \
@@ -47,6 +52,7 @@ RUN fonts='fonts-ipafont-gothic fonts-ipafont-mincho ttf-wqy-microhei fonts-wqy-
   apt-get install -y libdbus-glib-1-2 && \
   apt-get purge -y --auto-remove $buildDeps && \
   apt-get install -y google-chrome-stable=${CHROME_VERSION} && \
+  apt-get install -y microsoft-edge-dev=${EDGE_VERSION} && \
   # apt-get install -y google-chrome-beta=${CHROME_BETA_VERSION} && \
   apt-get clean autoclean && \
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
