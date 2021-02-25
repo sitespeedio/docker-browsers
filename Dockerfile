@@ -62,7 +62,10 @@ RUN fonts='fonts-ipafont-gothic fonts-ipafont-mincho ttf-wqy-microhei fonts-wqy-
       then \
         apt-get -y install lsb-release libcairo2 libatk1.0-0 libcairo-gobject2 libdbus-glib-1-2 libgdk-pixbuf2.0-0 libgdk-pixbuf2.0-0 libgtk-3-0 libharfbuzz0b libpango-1.0-0 libxcb-shm0 libxcomposite1 libxcursor1 ; \
         wget https://launchpad.net/~ubuntu-mozilla-security/+archive/ubuntu/ppa/+build/20775771/+files/firefox_84.0.2+build1-0ubuntu0.20.04.1_arm64.deb ; \
-        yes | dpkg -i firefox_84.0.2+build1-0ubuntu0.20.04.1_arm64.deb ; \ 
+        yes | dpkg -i firefox_84.0.2+build1-0ubuntu0.20.04.1_arm64.deb ; \
+        add-apt-repository ppa:chromium-team/beta ; \
+        apt-get update ; \
+        apt-get install -y chromium-browser chromium-chromedriver ; \
     fi && \
   apt-get clean autoclean && \
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
