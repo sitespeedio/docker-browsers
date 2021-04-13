@@ -4,8 +4,8 @@ ENV LC_ALL C
 ENV DEBIAN_FRONTEND noninteractive
 ENV DEBCONF_NONINTERACTIVE_SEEN true
 
-ENV FIREFOX_VERSION 84.0
-ENV CHROME_VERSION 87.*
+ENV FIREFOX_VERSION 87.0
+ENV CHROME_VERSION 90.*
 ENV EDGE_VERSION 89.*
 #ENV CHROME_BETA_VERSION 77.*
 
@@ -61,4 +61,5 @@ RUN fonts='fonts-ipafont-gothic fonts-ipafont-mincho ttf-wqy-microhei fonts-wqy-
 RUN echo "Set disable_coredump false" >> /etc/sudo.conf
 
 # We need a more recent ADB to be able to run Chromedriver 2.39
+RUN adb --version
 COPY files/adb /usr/local/bin/
