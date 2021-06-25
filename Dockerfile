@@ -1,10 +1,10 @@
-FROM sitespeedio/visualmetrics-deps:ffmpeg-4.2.2-imagemagick-6.9.10-23-p2
+FROM sitespeedio/visualmetrics-deps:ffmpeg-4.2.2-imagemagick-6.9.10-23-p2-d
 
 ENV LC_ALL C
 ENV DEBIAN_FRONTEND noninteractive
 ENV DEBCONF_NONINTERACTIVE_SEEN true
 
-ENV FIREFOX_VERSION 88.0
+ENV FIREFOX_VERSION 89.0
 ENV CHROME_VERSION 91.*
 ENV EDGE_VERSION 91.*
 #ENV CHROME_BETA_VERSION 77.*
