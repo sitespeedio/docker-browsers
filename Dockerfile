@@ -1,12 +1,12 @@
-FROM sitespeedio/visualmetrics-deps:ffmpeg-4.2.2-imagemagick-6.9.10-23-p2-fg
+FROM sitespeedio/visualmetrics-deps:ffmpeg-4.2.2-imagemagick-6.9.10-extra-3
 
 ENV LC_ALL C
 ENV DEBIAN_FRONTEND noninteractive
 ENV DEBCONF_NONINTERACTIVE_SEEN true
 
-ENV FIREFOX_VERSION 93.0
-ENV CHROME_VERSION 95.*
-ENV EDGE_VERSION 95.*
+ENV FIREFOX_VERSION 94.0
+ENV CHROME_VERSION 98.*
+ENV EDGE_VERSION 97.*
 #ENV CHROME_BETA_VERSION 77.*
 
 # Avoid ERROR: invoke-rc.d: policy-rc.d denied execution of start.
@@ -52,7 +52,7 @@ RUN fonts='fonts-ipafont-gothic fonts-ipafont-mincho ttf-wqy-microhei fonts-wqy-
   apt-get install -y libdbus-glib-1-2 && \
   apt-get purge -y --auto-remove $buildDeps && \
   apt-get install -y google-chrome-stable=${CHROME_VERSION} && \
-  apt-get install -y microsoft-edge-dev=${EDGE_VERSION} && \
+  apt-get install -y microsoft-edge-stable=${EDGE_VERSION} && \
   # apt-get install -y google-chrome-beta=${CHROME_BETA_VERSION} && \
   apt-get clean autoclean && \
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
