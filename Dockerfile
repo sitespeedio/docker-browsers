@@ -62,6 +62,10 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ] ; \
         then \
           apt-get update && \
           apt-get install -y firefox && \
+          add-apt-repository ppa:saiarcot895/chromium-beta && \
+          apt-get update && \
+          apt-get install -y chromium-browser chromium-chromedriver && \
+          ln -s /usr/lib/chromium-browser/chromedriver /usr/local/bin/chromedriver && \
           apt-get purge -y --auto-remove $buildDeps; \
     fi
 RUN apt-get clean autoclean && \
