@@ -1,4 +1,4 @@
-FROM sitespeedio/visualmetrics-deps:ffmpeg-4.2.2-imagemagick-6.9.10-extra-9
+FROM sitespeedio/visualmetrics-deps:ffmpeg-4.2.2-imagemagick-6.9.10-extra-10
 
 ARG TARGETPLATFORM
 
