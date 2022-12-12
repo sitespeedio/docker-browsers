@@ -1,4 +1,4 @@
-FROM sitespeedio/visualmetrics-deps:ffmpeg-4.2.2-imagemagick-6.9.10-extra-12
+FROM sitespeedio/visualmetrics-deps:ffmpeg-5.1.1
 
 ARG TARGETPLATFORM
 
@@ -6,9 +6,9 @@ ENV LC_ALL C
 ENV DEBIAN_FRONTEND noninteractive
 ENV DEBCONF_NONINTERACTIVE_SEEN true
 
-ENV FIREFOX_VERSION 105.0
-ENV CHROME_VERSION 105.*
-ENV EDGE_VERSION 105.*
+ENV FIREFOX_VERSION 107.0
+ENV CHROME_VERSION 108.*
+ENV EDGE_VERSION 108.*
 
 # Avoid ERROR: invoke-rc.d: policy-rc.d denied execution of start.
 # Avoid ERROR: invoke-rc.d: unknown initscript, /etc/init.d/systemd-logind not found.
