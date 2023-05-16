@@ -60,8 +60,14 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ] ; \
         apt-get purge -y --auto-remove $buildDeps; \
     elif [ "$TARGETPLATFORM" = "linux/arm64" ] ; \
         then \
+          # Get rid of that evil snap version of Firefox
+          rm -fR '/usr/bin/firefox' && \
+          apt remove --purge snapd -y && \
+          apt autoremove -y && \
+          apt-get remove --purge libsnapd-qt1 -y && \
+          add-apt-repository ppa:mozillateam/ppa -y && \
           apt-get update && \
-          apt-get install -y firefox && \
+          apt-get install -y -t 'o=LP-PPA-mozillateam' firefox && \
           add-apt-repository ppa:saiarcot895/chromium-beta && \
           apt-get update && \
           apt-get install -y chromium-browser chromium-chromedriver && \
