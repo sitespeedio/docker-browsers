@@ -7,5 +7,5 @@ For AMD64 you can choose versions. For ARM64 we use the latest supported version
 We also have xvfb & x11vnc installed.
 
 ```
-docker buildx build --push --platform linux/arm64,linux/amd64 -t sitespeedio/webbrowsers:chrome-113.0-firefox-113.0-edge-113.0 .
+docker buildx build --push --platform linux/arm64,linux/amd64 -t sitespeedio/webbrowsers:chrome-114.0-firefox-115.0-edge-114.0 .
 ```
