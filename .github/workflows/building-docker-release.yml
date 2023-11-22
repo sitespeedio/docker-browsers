@@ -36,4 +36,4 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           provenance: false
-          tags: sitespeedio/sitespeed.io:${{steps.tag.outputs.tag}}
+          tags: sitespeedio/webbrowsers:${{steps.tag.outputs.tag}}
