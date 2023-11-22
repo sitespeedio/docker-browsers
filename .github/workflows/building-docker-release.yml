@@ -2,7 +2,7 @@ name: Build Docker containers on new tag
 on:
   push:
     tags:
-      - 'v*.*.*'
+      - 'chrome*'
 jobs:
   docker:
     runs-on: ubuntu-latest
