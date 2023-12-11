@@ -7,8 +7,8 @@ ENV DEBIAN_FRONTEND noninteractive
 ENV DEBCONF_NONINTERACTIVE_SEEN true
 
 ENV FIREFOX_VERSION 120.0
-ENV CHROME_VERSION 119.*
-ENV EDGE_VERSION 119.*
+ENV CHROME_VERSION 120.*
+ENV EDGE_VERSION 120.*
 
 # Avoid ERROR: invoke-rc.d: policy-rc.d denied execution of start.
 # Avoid ERROR: invoke-rc.d: unknown initscript, /etc/init.d/systemd-logind not found.
