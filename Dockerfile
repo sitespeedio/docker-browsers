@@ -7,7 +7,7 @@ ENV DEBIAN_FRONTEND noninteractive
 ENV DEBCONF_NONINTERACTIVE_SEEN true
 
 ENV FIREFOX_VERSION 127.0
-ENV CHROME_VERSION 125.*
+ENV CHROME_VERSION 126.*
 ENV EDGE_VERSION 125.*
 
 # Avoid ERROR: invoke-rc.d: policy-rc.d denied execution of start.
