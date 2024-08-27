@@ -1,4 +1,4 @@
-FROM sitespeedio/visualmetrics-deps:ffmpeg-5.1.1-h
+FROM sitespeedio/visualmetrics-deps:ffmpeg-5.1.1-j
 
 ARG TARGETPLATFORM
 
