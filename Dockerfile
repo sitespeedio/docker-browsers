@@ -24,7 +24,7 @@ RUN echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d && \
 # firefox-locale-hi fonts-gargi		    # Hindi (for now)
 
 RUN fonts='fonts-ipafont-gothic fonts-ipafont-mincho ttf-wqy-microhei fonts-wqy-microhei fonts-tlwg-loma fonts-tlwg-loma-otf firefox-locale-hi fonts-gargi' && \
-  buildDeps='bzip2 gnupg wget ca-certificates curl gpg software-properties-common' && \
+  buildDeps='bzip2 gnupg wget ca-certificates curl gpg software-properties-common unzip' && \
   xvfbDeps='xvfb libgl1-mesa-dri xfonts-100dpi xfonts-75dpi xfonts-scalable xfonts-cyrillic dbus-x11' && \
   apt-get update && \
   DEBIAN_FRONTEND=noninteractive apt-get install -y $buildDeps --no-install-recommends && \
@@ -70,7 +70,16 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ] ; \
           apt-get install -y -t 'o=LP-PPA-mozillateam' firefox && \
           add-apt-repository ppa:saiarcot895/chromium-beta && \
           apt-get update && \
-          apt-get install -y chromium-browser chromium-chromedriver && \
+          wget https://playwright.azureedge.net/builds/chromium/1140/chromium-linux-arm64.zip &&\
+          unzip chromium-linux-arm64.zip && \
+          rm chromium-linux-arm64.zip && \
+          mv chrome-linux /usr/lib/ && \
+          apt-get install -y chromium-chromedriver && \
+          # Hacking away to get later Chromium version work on ARM
+          rm /usr/bin/chromium-browser && \
+          rm /usr/lib/chromium-browser/chromium-browser && \
+          ln -s /usr/lib/chrome-linux/chrome /usr/bin/chromium-browser && \
+          ln -s /usr/lib/chrome-linux/chrome /usr/lib/chromium-browser/chromium-browser && \
           ln -s /usr/lib/chromium-browser/chromedriver /usr/local/bin/chromedriver && \
           apt-get purge -y --auto-remove $buildDeps; \
     fi
