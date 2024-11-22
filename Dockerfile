@@ -6,15 +6,17 @@ ENV LC_ALL C
 ENV DEBIAN_FRONTEND noninteractive
 ENV DEBCONF_NONINTERACTIVE_SEEN true
 
-ENV FIREFOX_VERSION 133.0b9
+ENV FIREFOX_VERSION 132.*
 ENV CHROME_VERSION 131.*
-ENV EDGE_VERSION 130.*
+ENV EDGE_VERSION 131.*
 
 # Avoid ERROR: invoke-rc.d: policy-rc.d denied execution of start.
 # Avoid ERROR: invoke-rc.d: unknown initscript, /etc/init.d/systemd-logind not found.
 
 RUN echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d && \
   touch /etc/init.d/systemd-logind
+
+COPY firefox/firefox-no-snap /etc/apt/preferences.d/firefox-no-snap
 
 # Adding sudo for Throttle, lets see if we can find a better place (needed in Ubuntu 17)
 
@@ -23,7 +25,7 @@ RUN echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d && \
 # fonts-tlwg-loma fonts-tlwg-loma-otf       # th (Thai) fonts
 # firefox-locale-hi fonts-gargi		    # Hindi (for now)
 
-RUN fonts='fonts-ipafont-gothic fonts-ipafont-mincho ttf-wqy-microhei fonts-wqy-microhei fonts-tlwg-loma fonts-tlwg-loma-otf firefox-locale-hi fonts-gargi' && \
+RUN fonts='fonts-ipafont-gothic fonts-ipafont-mincho ttf-wqy-microhei fonts-wqy-microhei fonts-tlwg-loma fonts-tlwg-loma-otf fonts-gargi' && \
   buildDeps='bzip2 gnupg wget ca-certificates curl gpg software-properties-common unzip' && \
   xvfbDeps='xvfb libgl1-mesa-dri xfonts-100dpi xfonts-75dpi xfonts-scalable xfonts-cyrillic dbus-x11' && \
   apt-get update && \
@@ -47,14 +49,11 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ] ; \
         install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/  && \
         sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/edge stable main" > /etc/apt/sources.list.d/microsoft-edge-dev.list'  && \
         rm microsoft.gpg  && \
+        wget -q https://packages.mozilla.org/apt/repo-signing-key.gpg -O- | sudo tee /etc/apt/keyrings/packages.mozilla.org.asc > /dev/null && \
+        echo "deb [signed-by=/etc/apt/keyrings/packages.mozilla.org.asc] https://packages.mozilla.org/apt mozilla main" | sudo tee -a /etc/apt/sources.list.d/mozilla.list > /dev/null && \
         apt-get update && \
-        wget https://ftp.mozilla.org/pub/firefox/releases/${FIREFOX_VERSION}/linux-x86_64/en-US/firefox-${FIREFOX_VERSION}.tar.bz2 && \
-        tar -xjf firefox-${FIREFOX_VERSION}.tar.bz2 && \
-        rm firefox-${FIREFOX_VERSION}.tar.bz2 && \
-        mv firefox /opt/ && \
-        ln -s /opt/firefox/firefox /usr/local/bin/firefox && \
-        # Needed for when we install FF this way
-        apt-get install -y libdbus-glib-1-2 && \
+        apt-get update && \
+        apt-get install -y --no-install-recommends firefox=${FIREFOX_VERSION} && \
         apt-get install -y google-chrome-stable=${CHROME_VERSION} && \
         apt-get install -y microsoft-edge-stable=${EDGE_VERSION} &&  \
         apt-get purge -y --auto-remove $buildDeps; \
