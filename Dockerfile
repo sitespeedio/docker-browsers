@@ -2,13 +2,9 @@ FROM sitespeedio/visualmetrics-deps:ffmpeg-5.1.1-j
 
 ARG TARGETPLATFORM
 
-ENV LC_ALL C
-ENV DEBIAN_FRONTEND noninteractive
-ENV DEBCONF_NONINTERACTIVE_SEEN true
-
-ENV FIREFOX_VERSION 134.*
-ENV CHROME_VERSION 131.*
-ENV EDGE_VERSION 131.*
+ARG FIREFOX_VERSION=134.*
+ARG CHROME_VERSION=131.*
+ARG EDGE_VERSION=131.*
 
 # Avoid ERROR: invoke-rc.d: policy-rc.d denied execution of start.
 # Avoid ERROR: invoke-rc.d: unknown initscript, /etc/init.d/systemd-logind not found.
@@ -52,11 +48,12 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ] ; \
         wget -q https://packages.mozilla.org/apt/repo-signing-key.gpg -O- | sudo tee /etc/apt/keyrings/packages.mozilla.org.asc > /dev/null && \
         echo "deb [signed-by=/etc/apt/keyrings/packages.mozilla.org.asc] https://packages.mozilla.org/apt mozilla main" | sudo tee -a /etc/apt/sources.list.d/mozilla.list > /dev/null && \
         apt-get update && \
-        apt-get update && \
         apt-get install -y --no-install-recommends firefox=${FIREFOX_VERSION} && \
         apt-get install -y google-chrome-stable=${CHROME_VERSION} && \
         apt-get install -y microsoft-edge-stable=${EDGE_VERSION} &&  \
-        apt-get purge -y --auto-remove $buildDeps; \
+        apt-get purge -y --auto-remove $buildDeps && \
+        apt-get clean autoclean && \
+        rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*; \
     elif [ "$TARGETPLATFORM" = "linux/arm64" ] ; \
         then \
           # Get rid of that evil snap version of Firefox
@@ -80,10 +77,10 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ] ; \
           ln -s /usr/lib/chrome-linux/chrome /usr/bin/chromium-browser && \
           ln -s /usr/lib/chrome-linux/chrome /usr/lib/chromium-browser/chromium-browser && \
           ln -s /usr/lib/chromium-browser/chromedriver /usr/local/bin/chromedriver && \
-          apt-get purge -y --auto-remove $buildDeps; \
+          apt-get purge -y --auto-remove $buildDeps && \
+          apt-get clean autoclean && \
+          rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*; \
     fi
-RUN apt-get clean autoclean && \
-  rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # In the future sudo is fixed see https://github.com/sitespeedio/browsertime/issues/1105
 RUN echo "Set disable_coredump false" >> /etc/sudo.conf
