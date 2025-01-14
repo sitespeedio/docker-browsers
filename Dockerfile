@@ -63,7 +63,6 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ] ; \
           add-apt-repository ppa:mozillateam/ppa -y && \
           apt-get update && \
           apt-get install -y -t 'o=LP-PPA-mozillateam' firefox && \
-          add-apt-repository ppa:saiarcot895/chromium-beta && \
           apt-get update && \
           wget https://playwright.azureedge.net/builds/chromium/1148/chromium-linux-arm64.zip &&\
           unzip chromium-linux-arm64.zip && \
