@@ -60,7 +60,6 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ] ; \
           rm -fR '/usr/bin/firefox' && \
           apt remove --purge snapd -y && \
           apt autoremove -y && \
-          apt-get remove --purge libsnapd-qt1 -y && \
           add-apt-repository ppa:mozillateam/ppa -y && \
           apt-get update && \
           apt-get install -y -t 'o=LP-PPA-mozillateam' firefox && \
