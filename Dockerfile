@@ -70,7 +70,6 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ] ; \
           mv chrome-linux /usr/lib/ && \
           apt-get install -y chromium-chromedriver && \
           # Hacking away to get later Chromium version work on ARM
-          rm /usr/bin/chromium-browser && \
           rm /usr/lib/chromium-browser/chromium-browser && \
           ln -s /usr/lib/chrome-linux/chrome /usr/bin/chromium-browser && \
           ln -s /usr/lib/chrome-linux/chrome /usr/lib/chromium-browser/chromium-browser && \
