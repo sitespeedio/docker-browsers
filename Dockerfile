@@ -1,10 +1,14 @@
-FROM sitespeedio/visualmetrics-deps:ffmpeg-5.1.1-n
+FROM sitespeedio/visualmetrics-deps:ffmpeg-5.1.1-o
 
 ARG TARGETPLATFORM
 
-ARG FIREFOX_VERSION=134.*
-ARG CHROME_VERSION=132.*
-ARG EDGE_VERSION=131.*
+ENV LC_ALL C
+ENV DEBIAN_FRONTEND noninteractive
+ENV DEBCONF_NONINTERACTIVE_SEEN true
+
+ENV FIREFOX_VERSION 134.*
+ENV CHROME_VERSION 132.*
+ENV EDGE_VERSION 131.*
 
 # Avoid ERROR: invoke-rc.d: policy-rc.d denied execution of start.
 # Avoid ERROR: invoke-rc.d: unknown initscript, /etc/init.d/systemd-logind not found.
@@ -51,18 +55,18 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ] ; \
         apt-get install -y --no-install-recommends firefox=${FIREFOX_VERSION} && \
         apt-get install -y google-chrome-stable=${CHROME_VERSION} && \
         apt-get install -y microsoft-edge-stable=${EDGE_VERSION} &&  \
-        apt-get purge -y --auto-remove $buildDeps && \
-        apt-get clean autoclean && \
-        rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*; \
+        apt-get purge -y --auto-remove $buildDeps; \
     elif [ "$TARGETPLATFORM" = "linux/arm64" ] ; \
         then \
           # Get rid of that evil snap version of Firefox
           rm -fR '/usr/bin/firefox' && \
           apt remove --purge snapd -y && \
           apt autoremove -y && \
+          apt-get remove --purge libsnapd-qt1 -y && \
           add-apt-repository ppa:mozillateam/ppa -y && \
           apt-get update && \
           apt-get install -y -t 'o=LP-PPA-mozillateam' firefox && \
+          add-apt-repository ppa:saiarcot895/chromium-beta && \
           apt-get update && \
           wget https://playwright.azureedge.net/builds/chromium/1148/chromium-linux-arm64.zip &&\
           unzip chromium-linux-arm64.zip && \
@@ -70,16 +74,15 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ] ; \
           mv chrome-linux /usr/lib/ && \
           apt-get install -y chromium-chromedriver && \
           # Hacking away to get later Chromium version work on ARM
+          rm /usr/bin/chromium-browser && \
           rm /usr/lib/chromium-browser/chromium-browser && \
           ln -s /usr/lib/chrome-linux/chrome /usr/bin/chromium-browser && \
           ln -s /usr/lib/chrome-linux/chrome /usr/lib/chromium-browser/chromium-browser && \
           ln -s /usr/lib/chromium-browser/chromedriver /usr/local/bin/chromedriver && \
-          apt-get purge -y --auto-remove $buildDeps && \
-          apt-get clean autoclean && \
-          rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*; \
+          apt-get purge -y --auto-remove $buildDeps; \
     fi
+RUN apt-get clean autoclean && \
+  rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # In the future sudo is fixed see https://github.com/sitespeedio/browsertime/issues/1105
 RUN echo "Set disable_coredump false" >> /etc/sudo.conf
-
-CMD [ "npm", "--version" ]
