@@ -1,9 +1,9 @@
-FROM sitespeedio/visualmetrics-deps:ffmpeg-5.1.1-m
+FROM sitespeedio/visualmetrics-deps:ffmpeg-5.1.1-n
 
 ARG TARGETPLATFORM
 
 ARG FIREFOX_VERSION=134.*
-ARG CHROME_VERSION=131.*
+ARG CHROME_VERSION=132.*
 ARG EDGE_VERSION=131.*
 
 # Avoid ERROR: invoke-rc.d: policy-rc.d denied execution of start.
@@ -82,3 +82,5 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ] ; \
 
 # In the future sudo is fixed see https://github.com/sitespeedio/browsertime/issues/1105
 RUN echo "Set disable_coredump false" >> /etc/sudo.conf
+
+CMD [ "npm", "--version" ]
