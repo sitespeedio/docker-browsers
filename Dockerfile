@@ -7,7 +7,7 @@ ENV DEBIAN_FRONTEND noninteractive
 ENV DEBCONF_NONINTERACTIVE_SEEN true
 
 ENV FIREFOX_VERSION 142.*
-ENV CHROME_VERSION 139.*
+ENV CHROME_VERSION 140.*
 ENV EDGE_VERSION 139.*
 
 # Avoid ERROR: invoke-rc.d: policy-rc.d denied execution of start.
@@ -68,7 +68,7 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ] ; \
           apt-get install -y -t 'o=LP-PPA-mozillateam' firefox && \
           add-apt-repository ppa:saiarcot895/chromium-beta && \
           apt-get update && \
-          wget https://playwright.azureedge.net/builds/chromium/1180/chromium-linux-arm64.zip &&\
+          wget https://playwright.azureedge.net/builds/chromium/1188/chromium-linux-arm64.zip &&\
           unzip chromium-linux-arm64.zip && \
           rm chromium-linux-arm64.zip && \
           mv chrome-linux /usr/lib/ && \
