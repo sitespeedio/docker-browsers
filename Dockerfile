@@ -1,14 +1,14 @@
-FROM sitespeedio/visualmetrics-deps:ffmpeg-5.1.1-o
+FROM sitespeedio/visualmetrics-deps:ffmpeg-7.1.1
 
 ARG TARGETPLATFORM
 
-ENV LC_ALL C
-ENV DEBIAN_FRONTEND noninteractive
-ENV DEBCONF_NONINTERACTIVE_SEEN true
+ENV LC_ALL=C
+ENV DEBIAN_FRONTEND=noninteractive
+ENV DEBCONF_NONINTERACTIVE_SEEN=true
 
-ENV FIREFOX_VERSION 144.*
-ENV CHROME_VERSION 142.*
-ENV EDGE_VERSION 142.*
+ENV FIREFOX_VERSION=144.*
+ENV CHROME_VERSION=142.*
+ENV EDGE_VERSION=142.*
 
 # Avoid ERROR: invoke-rc.d: policy-rc.d denied execution of start.
 # Avoid ERROR: invoke-rc.d: unknown initscript, /etc/init.d/systemd-logind not found.
@@ -62,23 +62,15 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ] ; \
           rm -fR '/usr/bin/firefox' && \
           apt remove --purge snapd -y && \
           apt autoremove -y && \
-          apt-get remove --purge libsnapd-qt1 -y && \
-          add-apt-repository ppa:mozillateam/ppa -y && \
-          apt-get update && \
+          rm -rf /var/lib/apt/lists/*  && \
+          add-apt-repository -y ppa:xtradeb/apps && \
+          apt-get update &&\
+          apt-get install -y --no-install-recommends ungoogled-chromium chromium-driver &&\
           apt-get install -y -t 'o=LP-PPA-mozillateam' firefox && \
-          add-apt-repository ppa:saiarcot895/chromium-beta && \
           apt-get update && \
-          wget https://playwright.azureedge.net/builds/chromium/1198/chromium-linux-arm64.zip &&\
-          unzip chromium-linux-arm64.zip && \
-          rm chromium-linux-arm64.zip && \
-          mv chrome-linux /usr/lib/ && \
-          apt-get install -y chromium-chromedriver && \
-          # Hacking away to get later Chromium version work on ARM
-          rm /usr/bin/chromium-browser && \
-          rm /usr/lib/chromium-browser/chromium-browser && \
-          ln -s /usr/lib/chrome-linux/chrome /usr/bin/chromium-browser && \
-          ln -s /usr/lib/chrome-linux/chrome /usr/lib/chromium-browser/chromium-browser && \
-          ln -s /usr/lib/chromium-browser/chromedriver /usr/local/bin/chromedriver && \
+          ln -s /usr/bin/ungoogled-chromium /usr/local/bin/google-chrome && \
+          ln -s /usr/bin/ungoogled-chromium /usr/local/bin/chromium && \
+          ln -s /usr/bin/ungoogled-chromiumdriver /usr/local/bin/chromedriver && \
           apt-get purge -y --auto-remove $buildDeps; \
     fi
 RUN apt-get clean autoclean && \
