@@ -1,6 +1,7 @@
 FROM sitespeedio/visualmetrics-deps:ffmpeg-7.1.1-b
 
 ARG TARGETPLATFORM
+ARG buildDeps="bzip2 gnupg wget curl gpg software-properties-common unzip"
 
 ENV LC_ALL=C
 ENV DEBIAN_FRONTEND=noninteractive
@@ -26,7 +27,6 @@ COPY firefox/firefox-no-snap /etc/apt/preferences.d/firefox-no-snap
 # firefox-locale-hi fonts-gargi		    # Hindi (for now)
 
 RUN fonts='fonts-ipafont-gothic fonts-ipafont-mincho ttf-wqy-microhei fonts-wqy-microhei fonts-tlwg-loma fonts-tlwg-loma-otf fonts-gargi' && \
-  buildDeps='bzip2 gnupg wget ca-certificates curl gpg software-properties-common unzip' && \
   xvfbDeps='xvfb libgl1-mesa-dri xfonts-100dpi xfonts-75dpi xfonts-scalable xfonts-cyrillic dbus-x11' && \
   apt-get update && \
   DEBIAN_FRONTEND=noninteractive apt-get install -y $buildDeps --no-install-recommends && \
@@ -43,8 +43,9 @@ RUN fonts='fonts-ipafont-gothic fonts-ipafont-mincho ttf-wqy-microhei fonts-wqy-
 
 RUN if [ "$TARGETPLATFORM" = "linux/amd64" ] ; \
       then \
-        wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
-        echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list && \
+        mkdir -p /etc/apt/keyrings && \
+        wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | gpg --dearmor > /etc/apt/keyrings/google-chrome.gpg && \
+        echo "deb [signed-by=/etc/apt/keyrings/google-chrome.gpg] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list && \
         curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg && \
         install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/  && \
         sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/edge stable main" > /etc/apt/sources.list.d/microsoft-edge-dev.list'  && \
