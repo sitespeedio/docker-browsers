@@ -25,13 +25,14 @@ COPY firefox/firefox-no-snap /etc/apt/preferences.d/firefox-no-snap
 # firefox-locale-hi fonts-gargi		    # Hindi (for now)
 
 RUN fonts='fonts-ipafont-gothic fonts-ipafont-mincho ttf-wqy-microhei fonts-wqy-microhei fonts-tlwg-loma fonts-tlwg-loma-otf fonts-gargi' && \
-  buildDeps='bzip2 gnupg wget ca-certificates curl gpg software-properties-common unzip' && \
+  buildDeps='bzip2 gnupg gpg software-properties-common unzip' && \
   xvfbDeps='xvfb libgl1-mesa-dri xfonts-100dpi xfonts-75dpi xfonts-scalable xfonts-cyrillic dbus-x11' && \
   apt-get update && \
   apt-get install -y --no-install-recommends \
     $buildDeps \
     android-tools-adb \
     ca-certificates \
+    wget \
     x11vnc \
     sudo \
     iproute2 \
@@ -66,6 +67,8 @@ RUN fonts='fonts-ipafont-gothic fonts-ipafont-mincho ttf-wqy-microhei fonts-wqy-
   else \
       echo "Unsupported TARGETPLATFORM: $TARGETPLATFORM" >&2 && exit 1; \
   fi && \
+  { command -v google-chrome >/dev/null 2>&1 || command -v google-chrome-stable >/dev/null 2>&1; } || \
+    { echo "ERROR: chrome binary not found on PATH after install" >&2; exit 1; } && \
   apt-get purge -y --auto-remove $buildDeps && \
   apt-get clean autoclean && \
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
