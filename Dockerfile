@@ -46,8 +46,8 @@ RUN fonts='fonts-ipafont-gothic fonts-ipafont-mincho ttf-wqy-microhei fonts-wqy-
       wget -q -O- https://packages.mozilla.org/apt/repo-signing-key.gpg > /etc/apt/keyrings/packages.mozilla.org.asc && \
       echo "deb [signed-by=/etc/apt/keyrings/packages.mozilla.org.asc] https://packages.mozilla.org/apt mozilla main" > /etc/apt/sources.list.d/mozilla.list && \
       apt-get update && \
-      apt-get install -y --no-install-recommends \
-        firefox=${FIREFOX_VERSION} \
+      apt-get install -y --no-install-recommends firefox=${FIREFOX_VERSION} && \
+      apt-get install -y \
         google-chrome-stable=${CHROME_VERSION} \
         microsoft-edge-stable=${EDGE_VERSION}; \
   elif [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
