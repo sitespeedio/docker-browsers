@@ -2,7 +2,7 @@ FROM sitespeedio/visualmetrics-deps:ffmpeg-7.1.1-d
 
 ARG TARGETPLATFORM
 ARG FIREFOX_VERSION=153.*
-ARG CHROME_VERSION=150.*
+ARG CHROME_VERSION=151.*
 ARG EDGE_VERSION=150.*
 
 ENV LC_ALL=C
@@ -57,13 +57,15 @@ RUN fonts='fonts-ipafont-gothic fonts-ipafont-mincho ttf-wqy-microhei fonts-wqy-
       apt-get remove --purge -y snapd && \
       apt-get autoremove -y && \
       rm -rf /var/lib/apt/lists/* && \
+      wget -q -O- https://dl-ssl.google.com/linux/linux_signing_key.pub | gpg --dearmor > /etc/apt/keyrings/google-chrome.gpg && \
+      echo "deb [arch=arm64 signed-by=/etc/apt/keyrings/google-chrome.gpg] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list && \
       add-apt-repository -y ppa:xtradeb/apps && \
       apt-get update && \
-      apt-get install -y --no-install-recommends ungoogled-chromium chromium-driver && \
+      # chromium-driver (pulls in chromium) is used as chromedriver until Chrome for Testing is published for linux-arm64
+      apt-get install -y --no-install-recommends chromium-driver && \
       apt-get install -y -t 'o=LP-PPA-mozillateam' firefox && \
-      ln -s /usr/bin/ungoogled-chromium /usr/local/bin/google-chrome && \
-      ln -s /usr/bin/ungoogled-chromium /usr/local/bin/chromium && \
-      ln -s /usr/bin/ungoogled-chromiumdriver /usr/local/bin/chromedriver; \
+      apt-get install -y google-chrome-stable=${CHROME_VERSION} && \
+      ln -s /usr/bin/chromedriver /usr/local/bin/chromedriver; \
   else \
       echo "Unsupported TARGETPLATFORM: $TARGETPLATFORM" >&2 && exit 1; \
   fi && \
